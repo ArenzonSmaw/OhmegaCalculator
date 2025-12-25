@@ -1,7 +1,7 @@
 import tokens
 
-binary_operators = {'+', '-', '*', '/', '^', '%', '$', '&', '@'}
-unary_operators = {'!', '~'}
+binary_operators = {'+': 1, '*': 2, '/': 2, '^': 3, '%': 4, '$': 5, '&': 5, '@': 5}
+unary_operators = {'!', '~', '-'}
 white_spaces = {' ', '\t', ''}
 
 def token_type(char):
@@ -38,13 +38,14 @@ def tokenize_operand(expression, index):
             char = expression[index]
     value /= 10**count
     token = tokens.Operand(value, real_flag)
-    return token, index
+    return token, index-1
 
 
 
 def tokenize(expression):
     token_list = []
-    for char_index in range(len(expression)):
+    char_index = 0
+    while (char_index in range(len(expression))):
         tok_type = token_type(expression[char_index])
         if (tok_type == 0):
             operand, char_index = tokenize_operand(expression = expression, index = char_index)
@@ -52,13 +53,16 @@ def tokenize(expression):
         elif (tok_type == 1):
             operator = tokens.UnaryOperator(expression[char_index])
             token_list.append(operator)
+
         elif (tok_type == 2):
-            operator = tokens.BinaryOperator(expression[char_index])
+            operator = tokens.BinaryOperator(expression[char_index], binary_operators[expression[char_index]])
             token_list.append(operator)
         elif (tok_type == 3):
-            token_list.append(expression[char_index])
+            parentheses = expression[char_index]
+            token_list.append(tokens.Parentheses(parentheses))
         else:
             pass
+        char_index += 1
     return token_list
 
 

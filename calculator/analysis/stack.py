@@ -9,13 +9,19 @@ class StackEmptyException(Exception):
         return str(self._message)
 
 class Stack:
+    """
+    Stack data structure
+    push(value) -> push a value down the stack
+    pop() -> pop the last pushed value
+    peek() -> get the last pushed value without popping
+    """
     def __init__(self, size = -1):
         self._max_size = size
         self._data = []
         self._head = -1
 
     def is_empty(self):
-        return not (self._head <= self._max_size - 1 or self._max_size == -1)
+        return self._head == -1
 
     def push(self, element):
         self._head += 1

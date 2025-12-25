@@ -1,9 +1,14 @@
 class BinNode():
-    def __init__(self, value = None, right = None, left = None):
+    """
+    Binary Node data structure: each node has 2 sons, right and left
+    bn.value/right/left -> access the value / right son / left son of node
+    bn.set_value/right/left() -> change the value / right son / left son of node
+    """
+    def __init__(self, value = None, left = None, right = None):
         super().__init__()
         self._value = value
-        self._right: BinNode = right
-        self._left: BinNode = left
+        self._right: BinNode = right if type(right) == type(BinNode) else BinNode(value=right) if not right == None else None
+        self._left: BinNode = left if type(left) == type(BinNode) else BinNode(value=left) if not left == None else None
 
     def __str__(self):
         return str(self._value)
@@ -33,16 +38,21 @@ class BinNode():
             self._left = node
         else:
             self._left = BinNode(node)
-    """value = property(get_value,set_value)
-    right = property(get_right, set_right)
-    left = property(get_left, set_left)"""
+
+def inorder_print(bin_node):
+    """
+    Doesnt work
+    fix later
+    """
+    if (not bin_node == None):
+        inorder_print(bin_node.get_left)
+        print(node.get_value, end=" ")
+        inorder_print(bin_node.get_right)
 
 if (__name__ == "__main__"):
-    node = BinNode(5)
-    node.set_left(4)
-    node2 = node.get_left
-    node2.set_left(2)
+    node = BinNode(5,left= BinNode(4,left= BinNode(2,left= BinNode(1),right= BinNode(3))),right= BinNode(6,left= BinNode(7,9),right= BinNode(8)))
 
     print(node)
-    print(node2)
-    print(f"{node2.get_right} {node2.get_left}")
+    print(node.get_left)
+    print(f"{node.get_left.get_right} {node.get_left.get_left}")
+    inorder_print(node)
