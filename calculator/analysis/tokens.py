@@ -4,23 +4,22 @@ class Token:
 
 
 class Operand(Token):
-    def __init__(self, value):
+    def __init__(self, value, real_flag = False):
         super().__init__()
         self._value = value
+        self._is_real = real_flag or type(value) == float
 
-class Integer(Operand):
-    def __init__(self, value):
-        super().__init__(value)
-
-class Real(Operand):
-    def __init__(self, value):
-        super().__init__(value)
+    def __repr__(self):
+        return str(self._value)
 
 
 class Operator(Token):
     def __init__(self, operator):
         super().__init__()
         self._operator = operator
+
+    def __repr__(self):
+        return self._operator
 
 class UnaryOperator(Operator):
     def __init__(self, operator):

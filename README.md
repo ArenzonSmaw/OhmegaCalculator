@@ -6,9 +6,9 @@
 
 #### classes:
 
-###### token - implements interface calculatable
+###### token - 
 
-fields:
+###### fields:
 
 value
 
@@ -18,9 +18,9 @@ inheritors: operator, operand, parentheses
 
 
 
-###### operator 
+###### operator
 
-fields: 
+fields:
 
 operation
 
@@ -28,9 +28,9 @@ precedence
 
 inheritors:
 
-Binary operator 
+Binary operator
 
-Unary operator  
+Unary operator
 
 
 
@@ -48,19 +48,31 @@ Real
 
 
 
+###### node - implements calculatable
+
+fields: 
+
+value
+
+right
+
+left
+
+
+
 
 
 #### Utility Classes / Interfaces:
 
-###### Lexer - 
+###### Lexer -
 
 methods:
 
-tokenize - builds and return a list of tokens with elimination of whitespaces 
+tokenize - builds and return a list of tokens with elimination of whitespaces
 
 
 
-###### Parser - 
+###### Parser -
 
 methods:
 
@@ -72,7 +84,7 @@ build\_AST - builds an abstract syntax tree of the tokens so that the left hand 
 
 abstract method:
 
-operate - receives two operands and returns the result
+calculate - 
 
 
 
@@ -82,5 +94,5 @@ static method:
 
 calculate - gets a string representing an arithmetic expression, calls the lexer and parser methods, and then the evaluate method
 
-evaluate - gets a tree of operators and operands, calculates the result via the calculatable.operate method and returns the result. 
+evaluate - gets a tree of operators and operands, calculates the result via the calculatable.operate method and returns the result.
 
