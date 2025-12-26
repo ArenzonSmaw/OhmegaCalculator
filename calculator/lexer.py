@@ -13,7 +13,8 @@ def token_type(char):
     if char == '(' or char == ')' : return 3
     if char in binary_operators   : return 2
     if char in unary_operators    : return 1
-    if char >= '0' and char <= '9': return 0
+    if char >= '0' and char <= '9'\
+                   or char == '.' : return 0
     if char in white_spaces       : return -1
     else:
         raise UnknownTokenException(f"Unknown token: {char}.")
@@ -77,6 +78,6 @@ def tokenize(expression):
 
 
 if (__name__ == "__main__"):
-    exp = "5+ 4-32+ 57/(6 9) +4"
+    exp = "5+ 4-32+ .57/(6 9) +4"
     tokens = tokenize(exp)
     print(tokens)

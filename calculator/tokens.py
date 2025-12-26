@@ -8,8 +8,12 @@ postfix_operators = {'!',}
 class Operand(Token):
     def __init__(self, value, real_flag = False):
         super().__init__()
-        self._value = value
-        self._is_real = real_flag or type(value) == float
+        if (real_flag or int(value) != value):
+            self._real_flag = True
+            self._value = float(value)
+        else:
+            self._real_flag = False
+            self._value = int(value)
 
     def __repr__(self):
         return str(self._value)
@@ -31,6 +35,7 @@ class Operator(Token):
     def __ge__(self, other):
         return self._precedence >= other.get_precedence
 
+
     @property
     def get_precedence(self):
         return self._precedence
@@ -42,6 +47,7 @@ class Operator(Token):
 class UnaryOperator(Operator):
     def __init__(self, operator, precedence):
         super().__init__(operator, precedence, side= "left" if (operator in prefix_operators) else "right")
+
 
 
 
@@ -58,3 +64,4 @@ class Parentheses(Token):
 
     def __repr__(self):
         return self._value
+

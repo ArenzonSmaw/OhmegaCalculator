@@ -1,7 +1,8 @@
-import bin_node
+
 import lexer
 import tokens
 import exceptions
+import bin_node
 
 def parenthesized_list (tokens_list, index):
     """
@@ -28,8 +29,8 @@ def append_node (node, operands_list, operators_list):
     """
     adds node to operands_list, checks if there is a prefix unary operator and applies it accordingly
     """
-    if len(operators_list) > 0 and operators_list[len(operators_list)-1].get_side == "left":
-        node = bin_node.BinNode(operators_list[len(operators_list)-1], node)
+    if len(operators_list) > 0 and operators_list[-1].get_side == "left":
+        node = bin_node.BinNode(operators_list[-1], node)
         operators_list.pop()
 
     operands_list.append(node)
@@ -65,7 +66,9 @@ def append_operator(operator, operator_list, operand_list):
     while lower in precedence, applies the operators in operator_list on the nodes of operand_list
     when precedence is greater, appends operator to operator_list
     """
-    if not operator_list or (isinstance(operator, tokens.UnaryOperator) and operator.get_side == "left"):
+    if (operator.get_side == "right"):
+        apply_operator(operator, operand_list, operator_list)
+    elif not operator_list or (isinstance(operator, tokens.UnaryOperator) and operator.get_side == "left"):
         operator_list.append(operator)
     else:
         while (len(operator_list) > 0 and operator_list[len(operator_list)-1] >= operator):
@@ -83,7 +86,7 @@ def apply_all_operators(operators_list, operands_list):
             except IndexError:
                 raise exceptions.ExpectedTokenException(f"expected 2 operands for operator: {operator}.")
             else:
-                operands_list.append(bin_node.BinNode(operator,left_operand,right_operand))
+                operands_list.append(bin_node.BinNode(operator, left_operand, right_operand))
         else:
             try:
                 operand = operands_list.pop()
@@ -115,7 +118,7 @@ def build_syntax_tree(tokens_list: list):
                 raise exceptions.UnexpectedTokenException(f"Unexpected Token ')' at index: {str(int(token_index))}.")
 
         elif (isinstance(token, tokens.Operand)):
-            node = bin_node.BinNode(value= token.get_value)
+            node = bin_node.BinNode(value= token)
             append_node(node, operands_list, operators_list)
 
         else:

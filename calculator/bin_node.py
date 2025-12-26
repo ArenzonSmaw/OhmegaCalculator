@@ -6,9 +6,9 @@ class BinNode():
     """
     def __init__(self, value = None, left = None, right = None):
         super().__init__()
-        if (not left == None and not isinstance(left, BinNode)):
+        if (not left is None and not isinstance(left, BinNode)):
             left = BinNode(left)
-        if (not right == None and not isinstance(right, BinNode)):
+        if (not right is None and not isinstance(right, BinNode)):
             right = BinNode(right)
         self._value = value
         self._right: BinNode = right
@@ -42,13 +42,18 @@ class BinNode():
             self._left = node
         else:
             self._left = BinNode(node)
+    def has_left(self):
+        return not self._left is None
+    def has_right(self):
+        return not self._right is None
+
 
 def inorder_print(bin_node):
     """
     Doesnt work
     fix later
     """
-    if (not bin_node == None):
+    if (not bin_node is None):
         inorder_print(bin_node.get_left)
         print(node.get_value, end=" ")
         inorder_print(bin_node.get_right)
