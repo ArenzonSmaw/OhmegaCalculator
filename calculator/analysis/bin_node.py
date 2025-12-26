@@ -6,9 +6,13 @@ class BinNode():
     """
     def __init__(self, value = None, left = None, right = None):
         super().__init__()
+        if (not left == None and not isinstance(left, BinNode)):
+            left = BinNode(left)
+        if (not right == None and not isinstance(right, BinNode)):
+            right = BinNode(right)
         self._value = value
-        self._right: BinNode = right if type(right) == type(BinNode) else BinNode(value=right) if not right == None else None
-        self._left: BinNode = left if type(left) == type(BinNode) else BinNode(value=left) if not left == None else None
+        self._right: BinNode = right
+        self._left: BinNode = left
 
     def __str__(self):
         return str(self._value)

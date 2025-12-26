@@ -1,15 +1,23 @@
 import tokens
 
+class UnknownTokenException(Exception):
+    def __init__(self, message):
+        super().__init__()
+        self._message = message
+
 binary_operators = {'+': 1, '*': 2, '/': 2, '^': 3, '%': 4, '$': 5, '&': 5, '@': 5}
-unary_operators = {'!', '~', '-'}
+unary_operators = {'!': 6, '~': 6, '-': 1}
 white_spaces = {' ', '\t', ''}
 
 def token_type(char):
-    return       3 if char == '(' or char ==')' \
-            else 2 if char in binary_operators  \
-            else 1 if char in unary_operators   \
-            else -1 if char in white_spaces     \
-            else 0
+    if char == '(' or char == ')' : return 3
+    if char in binary_operators   : return 2
+    if char in unary_operators    : return 1
+    if char >= '0' and char <= '9': return 0
+    if char in white_spaces       : return -1
+    else:
+        raise UnknownTokenException(f"Unknown token: {char}.")
+
 
 def tokenize_operand(expression, index):
     """
@@ -51,7 +59,9 @@ def tokenize(expression):
             operand, char_index = tokenize_operand(expression = expression, index = char_index)
             token_list.append(operand)
         elif (tok_type == 1):
-            operator = tokens.UnaryOperator(expression[char_index])
+            operator = tokens.UnaryOperator(expression[char_index], unary_operators[expression[char_index]])
+            if(operator.get_precedence == 1):
+                token_list.append(tokens.BinaryOperator('+',1))
             token_list.append(operator)
 
         elif (tok_type == 2):

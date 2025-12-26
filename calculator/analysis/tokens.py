@@ -14,6 +14,10 @@ class Operand(Token):
     def __repr__(self):
         return str(self._value)
 
+    @property
+    def get_value(self):
+        return self._value
+
 
 class Operator(Token):
     def __init__(self, operator, precedence, side= "middle"):
@@ -36,8 +40,8 @@ class Operator(Token):
         return self._side
 
 class UnaryOperator(Operator):
-    def __init__(self, operator):
-        super().__init__(operator, 6, side= "left" if (operator in prefix_operators) else "right")
+    def __init__(self, operator, precedence):
+        super().__init__(operator, precedence, side= "left" if (operator in prefix_operators) else "right")
 
 
 
@@ -50,7 +54,7 @@ class Parentheses(Token):
         super().__init__()
         self._value = value
     def get_parentheses_type(self):
-        return "open" if self._value == '(' else "closed"
+        return "open" if self._value == '(' else "close"
 
     def __repr__(self):
         return self._value
