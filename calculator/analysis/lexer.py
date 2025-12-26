@@ -60,7 +60,7 @@ def tokenize(expression):
             token_list.append(operand)
         elif (tok_type == 1):
             operator = tokens.UnaryOperator(expression[char_index], unary_operators[expression[char_index]])
-            if(operator.get_precedence == 1):
+            if(operator.get_precedence == 1 and token_list and not isinstance(token_list[-1],tokens.Operator)):
                 token_list.append(tokens.BinaryOperator('+',1))
             token_list.append(operator)
 

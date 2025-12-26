@@ -1,4 +1,3 @@
-import stack
 import bin_node
 import lexer
 import tokens
@@ -23,7 +22,7 @@ def parenthesized_list (tokens_list, index):
     if not found:
         raise exceptions.ExpectedTokenException("Syntax Error: ')' Expected.")
     sub_list = tokens_list[index+1: end_index-1]
-    return build_syntax_tree(sub_list), end_index
+    return build_syntax_tree(sub_list), end_index - 1
 
 def append_node (node, operands_list, operators_list):
     """
@@ -31,6 +30,7 @@ def append_node (node, operands_list, operators_list):
     """
     if len(operators_list) > 0 and operators_list[len(operators_list)-1].get_side == "left":
         node = bin_node.BinNode(operators_list[len(operators_list)-1], node)
+        operators_list.pop()
 
     operands_list.append(node)
 
@@ -65,7 +65,7 @@ def append_operator(operator, operator_list, operand_list):
     while lower in precedence, applies the operators in operator_list on the nodes of operand_list
     when precedence is greater, appends operator to operator_list
     """
-    if not operator_list:
+    if not operator_list or (isinstance(operator, tokens.UnaryOperator) and operator.get_side == "left"):
         operator_list.append(operator)
     else:
         while (len(operator_list) > 0 and operator_list[len(operator_list)-1] >= operator):
@@ -123,10 +123,14 @@ def build_syntax_tree(tokens_list: list):
         token_index += 1
     while (len(operators_list) > 0):
         apply_all_operators(operators_list, operands_list)
-    return operands_list.pop()
+    if(len(operands_list) > 1):
+        raise exceptions.ExpectedTokenException("Expected operand.")
+    else:
+        return operands_list.pop()
 
 
 if (__name__ == "__main__"):
-    lst = lexer.tokenize("43*2-(5+8)")
+    lst = lexer.tokenize("5+40&(5^2)---~(4+8)*3")
     ast = build_syntax_tree(lst)
+    print(ast)
 
