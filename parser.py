@@ -117,17 +117,23 @@ def build_syntax_tree(tokens_list: list):
             else:
                 raise exceptions.UnexpectedTokenException(f"Unexpected Token ')' at index: {str(int(token_index))}.")
 
-        elif (isinstance(token, tokens.Operand)):
+        elif (type(token) == tokens.Operand):
             node = bin_node.BinNode(value= token)
             append_node(node, operands_list, operators_list)
 
         else:
+            if (repr(token) == '~' and isinstance(tokens_list[token_index+1], tokens.Operand)
+                                   and repr(tokens_list[token_index+1]) != '-'):
+                raise exceptions.ExpectedTokenException("expected operand after operator '~'")
+            elif (repr(token) == '-' and not (isinstance(tokens_list[token_index+1], tokens.Operand)
+                                              or repr(tokens_list[token_index+1]) == '-')):
+                raise exceptions.ExpectedTokenException("expected operand after operator '-'")
             append_operator(token, operators_list, operands_list)
         token_index += 1
     while (len(operators_list) > 0):
         apply_all_operators(operators_list, operands_list)
     if(len(operands_list) > 1):
-        raise exceptions.ExpectedTokenException("Expected operand.")
+        raise exceptions.ExpectedTokenException("Expected operator.")
     else:
         return operands_list.pop()
 

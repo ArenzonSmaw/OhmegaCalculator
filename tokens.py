@@ -1,3 +1,6 @@
+print("Tokens module imported")
+print(__name__)
+
 class Token:
     def __init__(self):
         pass

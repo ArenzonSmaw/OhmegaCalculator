@@ -2,6 +2,8 @@ import lexer
 import parser
 import tokens
 import exceptions
+from math import pow
+
 
 
 def recursive_operator_wrapper(func):
@@ -24,6 +26,7 @@ def factorial(number):
         return 1
     else:
         return number * factorial(number -1)
+
 
 
 def calculate_node(node):
@@ -58,7 +61,7 @@ def calculate_node(node):
             else:
                 return left / right
         elif (repr(node_value) == '^'):
-            return left ** right
+            return pow(left,right)
         elif (repr(node_value) == '%'):
             return left % right
         elif (repr(node_value) == '$'):
@@ -93,5 +96,5 @@ def calculate(expression):
 
 
 if (__name__ == "__main__"):
-    example = "3+6*7/9-1%4"
+    example = "4+4"
     print(calculate(example))

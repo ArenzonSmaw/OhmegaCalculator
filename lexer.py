@@ -1,9 +1,12 @@
 import tokens
+import exceptions
 
 class UnknownTokenException(Exception):
     def __init__(self, message):
         super().__init__()
         self._message = message
+    def __str__(self):
+        return self._message
 
 binary_operators = {'+': 1, '*': 2, '/': 2, '^': 3, '%': 4, '$': 5, '&': 5, '@': 5}
 unary_operators = {'!': 6, '~': 6, '-': 1}
