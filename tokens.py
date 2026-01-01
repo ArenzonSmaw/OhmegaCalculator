@@ -10,6 +10,11 @@ class Token:
         return self._index
 
     def calculate(self, value):
+        """
+        returns the value of the token.
+        for operand: returns the operand value
+        for operator: returns the result of the operation
+        """
         return value
 
 
@@ -93,6 +98,12 @@ class Tilde(UnaryOperator):
 class Negation(UnaryOperator):
     def __init__(self, index):
         super().__init__('-', 2.5, 'left', index)
+    def calculate(self, opnd):
+        super().calculate(-1 * opnd)
+
+class OperandBoundMinus(UnaryOperator):
+    def __init__(self, index):
+        super().__init__('-', 7, 'left', index)
     def calculate(self, opnd):
         super().calculate(-1 * opnd)
 
