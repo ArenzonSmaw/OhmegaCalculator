@@ -82,48 +82,53 @@ class Factorial(UnaryOperator):
         super().__init__('!',6,'right', index)
     @factorial_wrapper
     def calculate(self, opnd):
+        if (opnd < 0 or int(opnd) != opnd):
+            raise exceptions.InvalidOperandException(f"invalid operand {opnd} for operator '!' at index: {self._index}.")
         if (opnd == 0):
             return 1
-        super().calculate(opnd * self.calculate(opnd-1))
+        return super().calculate(opnd * self.calculate(opnd-1))
         return None
 
 class Tilde(UnaryOperator):
     def __init__(self, index):
         super().__init__('~',6,'left', index)
     def calculate(self, opnd):
-        if not (isinstance(opnd, Operand)):
-            raise exceptions.ExpectedTokenException(f"expected type 'operand' for operator '~' at index {self.get_index}. got '{opnd} instead.")
-        super().calculate(-1 * opnd.calculate())
+        if not (isinstance(opnd, (float, int))):
+            raise exceptions.ExpectedTokenException(f"expected type 'operand' for operator '~' at index {self.get_index}. got '{type(opnd)}' instead.")
+        return super().calculate(-1 * opnd)
 
 class Negation(UnaryOperator):
     def __init__(self, index):
         super().__init__('-', 2.5, 'left', index)
     def calculate(self, opnd):
-        super().calculate(-1 * opnd)
+        return super().calculate(-1 * opnd)
 
 class OperandBoundMinus(UnaryOperator):
     def __init__(self, index):
         super().__init__('-', 7, 'left', index)
     def calculate(self, opnd):
-        super().calculate(-1 * opnd)
+        return super().calculate(-1 * opnd)
 
 class DigSum(UnaryOperator):
     def __init__(self, index):
         super().__init__('#', 6, 'right', index)
     def calculate(self, opnd):
-        result = 0
         while (int(opnd) != opnd):
             opnd *= 10
-        while (opnd > 0):
-            result += opnd % 10
-            opnd = int(opnd/10)
-        super().calculate(result)
+
+        while(opnd > 10):
+            result = 0
+            while (opnd > 0):
+                result += opnd % 10
+                opnd = int(opnd/10)
+            opnd = int(result)
+        return super().calculate(opnd)
 
 class BinaryOperator(Operator):
     def __init__(self, operator, precedence, index):
         super().__init__(operator, precedence, 'middle', index)
     def calculate(self, left, right):
-        return left if not left is None else right
+        return left
 
 class Addition(BinaryOperator):
     def __init__(self, index):
@@ -143,7 +148,7 @@ class Multiply(BinaryOperator):
     def __init__(self, index):
         super().__init__('*', 2, index)
     def calculate(self, left, right):
-        super().calculate(left * right, None)
+        return super().calculate(left * right, None)
 
 class Divide(BinaryOperator):
     def __init__(self, index):
@@ -151,37 +156,37 @@ class Divide(BinaryOperator):
     def calculate(self,left, right):
         if (right == 0):
             raise exceptions.DivisionByZeroException(f'Division by zero is not allowed at index: {self._index}')
-        super().calculate(left / right, None)
+        return super().calculate(left / right, None)
 
 class Power(BinaryOperator):
     def __init__(self, index):
         super().__init__('^', 3, index)
     def calculate(self, left, right):
-        super().calculate(pow(left,right), None)
+        return super().calculate(pow(left,right), None)
 
 class Mod(BinaryOperator):
     def __init__(self, index):
         super().__init__('%', 4, index)
     def calculate(self, left, right):
-        super().calculate(left % right, None)
+        return super().calculate(left % right, None)
 
 class Max(BinaryOperator):
     def __init__(self, index):
         super().__init__('$', 5, index)
     def calculate(self, left, right):
-        super().calculate(left if left > right else right, None)
+        return super().calculate(left if left > right else right, None)
 
 class Min(BinaryOperator):
     def __init__(self, index):
         super().__init__('&', 5, index)
     def calculate(self, left, right):
-        super().calculate(left if left < right else right, None)
+        return super().calculate(left if left < right else right, None)
 
 class Average(BinaryOperator):
     def __init__(self, index):
         super().__init__('@', 5, index)
     def calculate(self, left, right):
-        super().calculate(float(left+right)/2, None)
+        return super().calculate(float(left+right)/2, None)
 
 class Parentheses(Token):
     def __init__(self, value, index):

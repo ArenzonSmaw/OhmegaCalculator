@@ -80,21 +80,7 @@ def apply_all_operators(operators_list, operands_list):
     while(len(operators_list) > 0):
         operator = operators_list.pop()
         apply_operator(operator, operands_list, operators_list)
-        """if (isinstance(operator, tokens.BinaryOperator)):
-            try:
-                right_operand = operands_list.pop()
-                left_operand = operands_list.pop()
-            except IndexError:
-                raise exceptions.ExpectedTokenException(f"expected 2 operands for operator: {operator}.")
-            else:
-                operands_list.append(bin_node.BinNode(operator, left_operand, right_operand))
-        else:
-            try:
-                operand = operands_list.pop()
-            except IndexError:
-                raise exceptions.ExpectedTokenException(f"expected operand for operator: {operator}")
-            else:
-                operands_list.append(bin_node.BinNode(operator, operand))"""
+
     if(len(operands_list) > 1):
         raise exceptions.ExpectedTokenException("Syntax error: missing operator.")
 
