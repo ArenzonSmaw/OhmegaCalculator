@@ -1,6 +1,6 @@
 class BinNode():
     """
-    Binary Node data structure: each node has 2 sons, right and left
+    Binary Node data structure: each node has 2 sub-nodes, right and left
     bn.value/right/left -> access the value / right son / left son of node
     bn.set_value/right/left() -> change the value / right son / left son of node
     """
@@ -48,20 +48,9 @@ class BinNode():
         return not self._right is None
 
 
-def inorder_print(bin_node):
-    """
-    Doesnt work
-    fix later
-    """
-    if (not bin_node is None):
-        inorder_print(bin_node.get_left)
-        print(node.get_value, end=" ")
-        inorder_print(bin_node.get_right)
-
 if (__name__ == "__main__"):
     node = BinNode(5,left= BinNode(4,left= BinNode(2,left= BinNode(1),right= BinNode(3))),right= BinNode(6,left= BinNode(7,9),right= BinNode(8)))
 
     print(node)
     print(node.get_left)
     print(f"{node.get_left.get_right} {node.get_left.get_left}")
-    inorder_print(node)

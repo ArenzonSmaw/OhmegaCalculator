@@ -32,9 +32,13 @@ def tokenize_minus(token_list, expression, index):
     token = None
     if (not index <= len(expression)):
         raise exceptions.ExpectedTokenException(f"Expected operand after operator '-' at index: {index}")
-    if (isinstance(token_list[-1], tokens.Operator)): # if last inserted token is an operator, then it is an operand bound minus
-        token = tokens.OperandBoundMinus(index)
-    elif (isinstance(token_list[-1], tokens.Operand)):
+    if (isinstance(token_list[-1], tokens.Operator) and token_list[-1].get_side != "right"):
+        if (token_list[-1].get_side != 'right'):
+            # if last inserted token is an operator that 'operates' on the minus, then it is an operand bound minus
+            token = tokens.OperandBoundMinus(index)
+        else:
+            token = tokens.Subtraction(index)
+    elif (isinstance(token_list[-1], (tokens.Operand, tokens.Parentheses))):
         token = tokens.Subtraction(index)
     else:
         token = tokens.Negation(index)

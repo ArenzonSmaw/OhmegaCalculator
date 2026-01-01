@@ -29,7 +29,7 @@ def append_node (node, operands_list, operators_list):
     """
     adds node to operands_list, checks if there is a prefix unary operator and applies it accordingly
     """
-    if len(operators_list) > 0 and operators_list[-1].get_side == "left":
+    while (len(operators_list) > 0 and operators_list[-1].get_side == "left"):
         node = bin_node.BinNode(operators_list[-1], node)
         operators_list.pop()
 
@@ -42,12 +42,12 @@ def apply_operator(operator, operand_list, operator_list):
     checks for syntax errors and builds a mini-tree that represents that singular operation
     returns: the mini syntax tree
     """
-    if (type(operator) == tokens.BinaryOperator):
+    if (isinstance(operator, tokens.BinaryOperator)):
         try:
             right_operand = operand_list.pop()
             left_operand = operand_list.pop()
         except IndexError:
-            raise exceptions.ExpectedTokenException(f"expected 2 operands for binary operator: {operator}")
+            raise exceptions.ExpectedTokenException(f"expected 2 operands for binary operator: {operator} at index {operator.get_index}.")
         else:
             operand_list.append(bin_node.BinNode(operator, left_operand, right_operand))
     elif (operator.get_side == "left"):
@@ -56,7 +56,7 @@ def apply_operator(operator, operand_list, operator_list):
         try:
             operand = operand_list.pop()
         except IndexError:
-            raise exceptions.ExpectedTokenException(f"expected operand for operator: {operator}")
+            raise exceptions.ExpectedTokenException(f"expected operand for operator: {operator} at index {operator.get_index}.")
         else:
             operand_list.append(bin_node.BinNode(operator, operand))
 
@@ -68,10 +68,10 @@ def append_operator(operator, operator_list, operand_list):
     """
     if (operator.get_side == "right"):
         apply_operator(operator, operand_list, operator_list)
-    elif not operator_list or (isinstance(operator, tokens.UnaryOperator) and operator.get_side == "left"):
+    elif not operator_list or operator.get_side == "left":
         operator_list.append(operator)
     else:
-        while (len(operator_list) > 0 and operator_list[len(operator_list)-1] >= operator):
+        while (len(operator_list) > 0 and operator_list[-1] >= operator):
             apply_operator(operator_list.pop(), operand_list, operator_list)
         operator_list.append(operator)
 
@@ -79,7 +79,8 @@ def apply_all_operators(operators_list, operands_list):
 
     while(len(operators_list) > 0):
         operator = operators_list.pop()
-        if (type(operator) == tokens.BinaryOperator):
+        apply_operator(operator, operands_list, operators_list)
+        """if (isinstance(operator, tokens.BinaryOperator)):
             try:
                 right_operand = operands_list.pop()
                 left_operand = operands_list.pop()
@@ -93,9 +94,9 @@ def apply_all_operators(operators_list, operands_list):
             except IndexError:
                 raise exceptions.ExpectedTokenException(f"expected operand for operator: {operator}")
             else:
-                operands_list.append(bin_node.BinNode(operator, operand))
+                operands_list.append(bin_node.BinNode(operator, operand))"""
     if(len(operands_list) > 1):
-        raise exceptions.ExpectedTokenException("Syntax error: operand expected.")
+        raise exceptions.ExpectedTokenException("Syntax error: missing operator.")
 
 
 def build_syntax_tree(tokens_list: list):
@@ -115,23 +116,20 @@ def build_syntax_tree(tokens_list: list):
                 node, token_index = parenthesized_list(tokens_list, token_index)
                 append_node(node, operands_list, operators_list)
             else:
-                raise exceptions.UnexpectedTokenException(f"Unexpected Token ')' at index: {str(int(token_index))}.")
+                raise exceptions.UnexpectedTokenException(f"Unexpected Token ')' at index: {token.get_index}.")
 
-        elif (type(token) == tokens.Operand):
+        elif (isinstance(token, tokens.Operand)):
             node = bin_node.BinNode(value= token)
             append_node(node, operands_list, operators_list)
 
-        else:
-            if (repr(token) == '~' and isinstance(tokens_list[token_index+1], tokens.Operand)
-                                   and repr(tokens_list[token_index+1]) != '-'):
-                raise exceptions.ExpectedTokenException("expected operand after operator '~'")
-            elif (repr(token) == '-' and not (isinstance(tokens_list[token_index+1], tokens.Operand)
-                                              or repr(tokens_list[token_index+1]) == '-')):
-                raise exceptions.ExpectedTokenException("expected operand after operator '-'")
+        elif (isinstance(token, tokens.Operator)):
             append_operator(token, operators_list, operands_list)
+        else:
+            raise exceptions.UnexpectedTokenException(f"unexpected token {repr(token)} at index {token.get_index}.")
         token_index += 1
-    while (len(operators_list) > 0):
-        apply_all_operators(operators_list, operands_list)
+
+    apply_all_operators(operators_list, operands_list)
+
     if(len(operands_list) > 1):
         raise exceptions.ExpectedTokenException("Expected operator.")
     else:
