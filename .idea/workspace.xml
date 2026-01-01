@@ -6,13 +6,7 @@
   <component name="ChangeListManager">
     <list default="true" id="6348066b-bd04-4d97-86cd-62e22ce8e98c" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/calculator/__init__.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/calculator/bin_node.py" beforeDir="false" afterPath="$PROJECT_DIR$/bin_node.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/calculator/calculator.py" beforeDir="false" afterPath="$PROJECT_DIR$/calculator.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/calculator/exceptions.py" beforeDir="false" afterPath="$PROJECT_DIR$/exceptions.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/calculator/lexer.py" beforeDir="false" afterPath="$PROJECT_DIR$/lexer.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/calculator/parser.py" beforeDir="false" afterPath="$PROJECT_DIR$/parser.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/calculator/tokens.py" beforeDir="false" afterPath="$PROJECT_DIR$/tokens.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tokens.py" beforeDir="false" afterPath="$PROJECT_DIR$/tokens.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -57,7 +51,7 @@
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252": "true",
     "RunOnceActivity.git.unshallow": "true",
-    "git-widget-placeholder": "feature/validation__and__ui",
+    "git-widget-placeholder": "fix/operatorclasses",
     "last_opened_file_path": "C:/Users/arenz/PycharmProjects/Calculator/calculator",
     "settings.editor.selected.configurable": "editor.preferences.inline.completion"
   }
@@ -95,11 +89,6 @@
           <url>file://$PROJECT_DIR$/bin_node.py</url>
           <line>6</line>
           <option name="timeStamp" value="4" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/calculator.py</url>
-          <line>90</line>
-          <option name="timeStamp" value="29" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>
