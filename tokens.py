@@ -67,9 +67,9 @@ postfix_operators = {'!', }
 
 def factorial_wrapper(fact):
     cache = {}
-    def wrapper(num):
+    def wrapper(obj, num):
         if num not in cache:
-            cache[num] = fact(num)
+            cache[num] = fact(obj, num)
         return cache[num]
     return wrapper
 
@@ -86,8 +86,10 @@ class Factorial(UnaryOperator):
             raise exceptions.InvalidOperandException(f"invalid operand {opnd} for operator '!' at index: {self._index}.")
         if (opnd == 0):
             return 1
-        return super().calculate(opnd * self.calculate(opnd-1))
-        return None
+        try:
+            return super().calculate(opnd * self.calculate(opnd-1))
+        except RecursionError:
+            raise exceptions.InvalidOperandException(f"operand {opnd} is too large for operator '!' at index {self._index}.")
 
 class Tilde(UnaryOperator):
     def __init__(self, index):
@@ -113,14 +115,12 @@ class DigSum(UnaryOperator):
     def __init__(self, index):
         super().__init__('#', 6, 'right', index)
     def calculate(self, opnd):
-        while (int(opnd) != opnd):
-            opnd *= 10
-
         while(opnd > 10):
+            number = str(opnd)
             result = 0
-            while (opnd > 0):
-                result += opnd % 10
-                opnd = int(opnd/10)
+            for digit in number:
+                if (digit != '.'):
+                    result += int(digit)
             opnd = int(result)
         return super().calculate(opnd)
 
@@ -162,12 +162,17 @@ class Power(BinaryOperator):
     def __init__(self, index):
         super().__init__('^', 3, index)
     def calculate(self, left, right):
-        return super().calculate(pow(left,right), None)
+        try:
+            return super().calculate(pow(left,right), None)
+        except OverflowError:
+            raise exceptions.InvalidOperandException(f"operands {left}, {right} are too large for '^' operator at index {self._index}.")
 
 class Mod(BinaryOperator):
     def __init__(self, index):
         super().__init__('%', 4, index)
     def calculate(self, left, right):
+        if (right == 0):
+            raise exceptions.DivisionByZeroException(f'Division by zero is not allowed at index: {self._index}')
         return super().calculate(left % right, None)
 
 class Max(BinaryOperator):
@@ -197,7 +202,7 @@ class Parentheses(Token):
         super().__init__(index)
         self._value = value
         self._type = parentheses_type
-
+    @property
     def get_parentheses_type(self):
         return self._type
 

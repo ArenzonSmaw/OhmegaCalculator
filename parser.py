@@ -14,7 +14,7 @@ def parenthesized_list (tokens_list, index):
     found = False
     while (end_index < len(tokens_list) and not found):
         if (type(tokens_list[end_index]) == tokens.Parentheses):
-            if (tokens_list[end_index].get_parentheses_type == "open"):
+            if (tokens_list[end_index].get_parentheses_type == 'open'):
                 count +=1
             else:
                 count -= 1
@@ -46,15 +46,24 @@ def apply_operator(operator, operand_list, operator_list):
         try:
             right_operand = operand_list.pop()
             left_operand = operand_list.pop()
+            if (left_operand.get_value.get_index > operator.get_index):
+                raise exceptions.ExpectedTokenException(f"expected left-hand operand for operator {operator} at index {operator.get_index}.")
         except IndexError:
             raise exceptions.ExpectedTokenException(f"expected 2 operands for binary operator: {operator} at index {operator.get_index}.")
         else:
             operand_list.append(bin_node.BinNode(operator, left_operand, right_operand))
     elif (operator.get_side == "left"):
-        operator_list.append(operator)
+        if (not operand_list
+            or operand_list[-1].get_value.get_index < operator.get_index):
+            raise exceptions.ExpectedTokenException(f"expected operand for operator {operator} at index {operator.get_index}.")
+        else:
+            operand = operand_list.pop().get_value
+            operand_list.append(bin_node.BinNode(operator, operand))
     else:
         try:
             operand = operand_list.pop()
+            if (operand.get_value.get_index > operator.get_index):
+                raise exceptions.ExpectedTokenException(f"expected left-hand operand for operator {operator} at index {operator.get_index}.")
         except IndexError:
             raise exceptions.ExpectedTokenException(f"expected operand for operator: {operator} at index {operator.get_index}.")
         else:
@@ -98,7 +107,7 @@ def build_syntax_tree(tokens_list: list):
     while (token_index < len(tokens_list)):
         token = tokens_list[token_index]
         if (type(token) == tokens.Parentheses):
-            if(token.get_parentheses_type() == "open"):
+            if(token.get_parentheses_type == "open"):
                 node, token_index = parenthesized_list(tokens_list, token_index)
                 append_node(node, operands_list, operators_list)
             else:

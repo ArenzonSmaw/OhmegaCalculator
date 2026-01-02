@@ -32,7 +32,9 @@ def tokenize_minus(token_list, expression, index):
     token = None
     if (not index <= len(expression)):
         raise exceptions.ExpectedTokenException(f"Expected operand after operator '-' at index: {index}")
-    if (isinstance(token_list[-1], tokens.Operator)):
+    if (not token_list or repr(token_list[-1]) == '('):
+        token = tokens.Negation(index)
+    elif (isinstance(token_list[-1], tokens.Operator)):
         if (token_list[-1].get_side != 'right'):
             # if last inserted token is an operator that 'operates' on the minus, then it is an operand bound minus
             token = tokens.OperandBoundMinus(index)
@@ -78,7 +80,7 @@ def tokenize_operand(expression, index):
     return token, index-1
 
 def tokenize_unary_operator(token_list, char, index):
-    if (char == '~' and type(token_list[-1]) == tokens.Tilde):
+    if (char == '~' and token_list and type(token_list[-1]) == tokens.Tilde):
         raise exceptions.ExpectedTokenException(f"expected operand after operator '~' at index {index}")
     if (char == '~'):
         return tokens.Tilde(index)

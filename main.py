@@ -12,7 +12,10 @@ def calc_help():
         "\n $ : Maximum: format X $ Y, example: 40$60"
         "\n & : Minimum: format X & Y, example: 40&60"
         "\n ! : Factorial: format X!, example: 40!"
-        "\n ~ : Negation: format ~Y, example ~5"
+        "\n ~ : Negation: format ~Y, example: ~5"
+        "\n # : Digit Sum: format X#, example: 12345#"
+        "\n"
+        "\n parentheses ( ) : format X*(Y)*Z, example: 4+(5-6)/3"
         "\n"
     )
 def main():
@@ -42,9 +45,10 @@ def main():
             print("You have found my true one weakness, I must now concede... have a blessed day!")
             raise SystemExit
     try:
-        input("you actually thought you could quit THE ULTIMATE CALCULATOR PROGRAM OF ALL TIMES???")
-        input("you were right...")
-        input("i guess that's what you wanted all along")
+        input("oh... you actually want to quit?")
+        input("that's a bummer...")
+        input("i guess we were just not meant to be.")
+        input("it's really not me, its you...")
         input("farewell my human entertainer...")
     except (SystemExit,KeyboardInterrupt,EOFError):
         pass

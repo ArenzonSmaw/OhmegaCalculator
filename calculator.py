@@ -55,6 +55,9 @@ def calculate(expression):
 
 
 if (__name__ == "__main__"):
-    example = "136/2+6^2#-7"
+    example = "((123*(2/3)^2)%3*(853#^4)$(268^1.4))@(62!#--~153/1^-30)"
     result = calculate(example)
     print(result)
+    """
+    
+    """
