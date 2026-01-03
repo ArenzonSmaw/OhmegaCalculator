@@ -10,8 +10,8 @@ class UnknownTokenException(Exception):
 
 binary_operators = {'+': 1, '*': 2, '/': 2, '^': 3, '%': 4, '$': 5, '&': 5, '@': 5}
 unary_operators = {'!': 6, '~': 6, '#': 6}
-white_spaces = {' ', '\t', '-'} #minus is counted as a white space so the tokenize_operand func will know to stop scanning the operand,
-                                # but the - operator need special tokenization so isn't included in any other set
+white_spaces = {' ', '\t', '\n', '\0', '-'}  # minus is counted as a white space so the tokenize_operand func will know to stop scanning the operand,
+                                             # but the - operator need special tokenization so isn't included in any other set
 
 def token_type(char, index):
     if char == '(' or char == ')' : return 3
@@ -74,9 +74,9 @@ def tokenize_operand(expression, index):
             char = expression[index]
     if (real_flag):
         value /= 10**count
-        token = tokens.RealOperand(value, index)
+        token = tokens.RealOperand(value, index-1)
     else:
-        token = tokens.IntegerOperand(value, index)
+        token = tokens.IntegerOperand(value, index-1)
     return token, index-1
 
 def tokenize_unary_operator(token_list, char, index):

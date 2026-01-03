@@ -115,8 +115,10 @@ class DigSum(UnaryOperator):
     def __init__(self, index):
         super().__init__('#', 6, 'right', index)
     def calculate(self, opnd):
-        while(opnd > 10):
-            number = str(opnd)
+        if (opnd < 0):
+            raise exceptions.InvalidOperandException(f"operand cannot be negative for operator '#' at index: {self._index}.")
+        while(opnd >= 10):
+            number = f"{opnd:f}"
             result = 0
             for digit in number:
                 if (digit != '.'):

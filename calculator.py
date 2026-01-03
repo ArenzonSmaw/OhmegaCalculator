@@ -55,7 +55,7 @@ def calculate(expression):
 
 
 if (__name__ == "__main__"):
-    example = "-123#"
+    example = ""
     result = calculate(example)
     print(result)
     """

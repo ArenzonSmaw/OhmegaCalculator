@@ -29,7 +29,7 @@ def append_node (node, operands_list, operators_list):
     """
     adds node to operands_list, checks if there is a prefix unary operator and applies it accordingly
     """
-    while (len(operators_list) > 0 and operators_list[-1].get_side == "left"):
+    while (len(operators_list) > 0 and operators_list[-1].get_side == "left" and operators_list[-1].get_precedence >= 6):
         node = bin_node.BinNode(operators_list[-1], node)
         operators_list.pop()
 
@@ -54,10 +54,10 @@ def apply_operator(operator, operand_list, operator_list):
             operand_list.append(bin_node.BinNode(operator, left_operand, right_operand))
     elif (operator.get_side == "left"):
         if (not operand_list
-            or operand_list[-1].get_value.get_index < operator.get_index):
+            or operand_list[-1].get_value.get_index <= operator.get_index):
             raise exceptions.ExpectedTokenException(f"expected operand for operator {operator} at index {operator.get_index}.")
         else:
-            operand = operand_list.pop().get_value
+            operand = operand_list.pop()
             operand_list.append(bin_node.BinNode(operator, operand))
     else:
         try:
@@ -76,6 +76,8 @@ def append_operator(operator, operator_list, operand_list):
     when precedence is greater, appends operator to operator_list
     """
     if (operator.get_side == "right"):
+        if (operator_list and operator_list[-1] >= operator):
+            apply_operator(operator_list[-1], operand_list, operator_list)
         apply_operator(operator, operand_list, operator_list)
     elif not operator_list or operator.get_side == "left":
         operator_list.append(operator)
@@ -127,8 +129,10 @@ def build_syntax_tree(tokens_list: list):
 
     if(len(operands_list) > 1):
         raise exceptions.ExpectedTokenException("Expected operator.")
-    else:
+    elif operands_list:
         return operands_list.pop()
+    else:
+        raise exceptions.EmptyExpressionException("input expression was empty")
 
 
 if (__name__ == "__main__"):

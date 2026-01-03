@@ -213,7 +213,7 @@ def test_valid_digit_sum_precedent():
 def test_valid_digit_sum_non_precedent():
     assert(calculate("6!#"), 9)
 def test_valid_digit_sum_concatenated():
-    assert(calculate("(((7777#)!#)!#^2)#"), 9)
+    assert(calculate("(((7777#)!#)!#^2)#+1"), 10)
 def test_valid_digit_sum_floating_point():
     assert(calculate("123456789.987654321#"), 9)
 def test_invalid_digit_sum_operand_expected():
@@ -229,7 +229,7 @@ def test_valid_minus_expression():
     assert(calculate("-8--4-2-------7--13-(-13)--100"), 113)
 def test_invalid_minus_operand_expected():
     try:
-        calculate("-4--(5-)--4")
+        calculate("-4--(5-)--4-1--3--4")
         assert(False)
     except exceptions.ExpectedTokenException:
         assert(True)
@@ -242,6 +242,12 @@ def test_valid_combined_operator_expression_1():
 def test_valid_combined_operator_expression_2():
     assert(calculate("(6+8)/2+~(6@8)+(1368+613#+892)#-83%(4+2)"), 4)
 
+def test_valid_combined_operator_expression_3():
+    assert(calculate("-(7^2)!#+(78*2)@(95%6^3)"), 135.5)
+
+def test_valid_combined_operator_expression_4():
+    assert(calculate("~((987^2)#^(7^0.5&(0.9^3)))$0"),0)
+
 def test_invalid_combined_operator_zero_division():
     try:
         calculate("~(6+5+~-7)/0$(62-80)*3+4+7")
@@ -252,9 +258,36 @@ def test_invalid_combined_operator_zero_division():
         assert(False)
 def test_invalid_combined_operator_invalid_operator():
     try:
-        calculate("3+4+7*((5+6)/2)!")
+        calculate("3+4+7*((5+6)/2)!*(4^5)#^0.5")
         assert(False)
     except exceptions.InvalidOperandException:
+        assert(True)
+    except:
+        assert(False)
+
+def taco_test():
+    try:
+        calculate("taco")
+        assert(False)
+    except exceptions.UnknownTokenException:
+        assert(True)
+    except:
+        assert(False)
+
+def test_empty_string_input():
+    try:
+        calculate("")
+        assert(False)
+    except exceptions.EmptyExpressionException:
+        assert(True)
+    except:
+        assert(False)
+
+def test_white_spae_input():
+    try:
+        calculate(" \t \t \n   \0")
+        assert(False)
+    except exceptions.EmptyExpressionException:
         assert(True)
     except:
         assert(False)
