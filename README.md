@@ -48,7 +48,7 @@ parentheses lets you put an operation as an operand in a bigger operation. examp
 
 #### exiting the program:
 
-DO NOT press the red "stop the program" button. The calculate CAN and WILL get offended. Instead, type in the word "quit" (you may practice politeness and ask to quit in a respectful manner). The calculate then will ask you to confirm your request to quit the program (any input other than 'yes' will be ignored). After confirming your wish to exit the program the calculate WILL inflict emotional manipulation on you (DO NOT let the calculator manipulate you. Calculators DON'T have feelings). When it happens, remain calm and keep pressing ENTER until the program closes.  ANY calling from the calculator to start it up again are NOT REAL and are side effects of the emotional manipulation the calculator cast on you. DO NOT start the calculator again unless you wish to continue your calculations.
+DO NOT press the red "stop the program" button. The calculator CAN and WILL get offended. Instead, type in the word "quit" (you may practice politeness and ask to quit in a respectful manner). The calculator then will ask you to confirm your request to quit the program (any input other than 'yes' will be ignored). After confirming your wish to exit the program the calculator WILL inflict emotional manipulation on you (DO NOT let the calculator manipulate you. Calculators DON'T have feelings). When it happens, remain calm and keep pressing ENTER until the program closes.  ANY calling from the calculator to start it up again are NOT REAL and are side effects of the emotional manipulation the calculator cast on you. DO NOT start the calculator again unless you wish to continue your calculations.
 
 
 
