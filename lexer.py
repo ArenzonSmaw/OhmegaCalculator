@@ -1,13 +1,6 @@
 import tokens
 import exceptions
 
-class UnknownTokenException(Exception):
-    def __init__(self, message):
-        super().__init__()
-        self._message = message
-    def __str__(self):
-        return self._message
-
 binary_operators = {'+': 1, '*': 2, '/': 2, '^': 3, '%': 4, '$': 5, '&': 5, '@': 5}
 unary_operators = {'!': 6, '~': 6, '#': 6}
 white_spaces = {' ', '\t', '\n', '\0', '-'}  # minus is counted as a white space so the tokenize_operand func will know to stop scanning the operand,
@@ -21,7 +14,7 @@ def token_type(char, index):
                    or char == '.' : return 0
     if char in white_spaces       : return -1
     else:
-        raise UnknownTokenException(f"Unknown token: {char} at index {index}.")
+        raise exceptions.UnknownTokenException(f"Unknown token: {char} at index {index}.")
 
 def tokenize_minus(token_list, expression, index):
     """
